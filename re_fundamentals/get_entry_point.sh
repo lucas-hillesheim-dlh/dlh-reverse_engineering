@@ -22,7 +22,7 @@ fi
 # 4. Use readelf to extract the required data cleanly
 magic_number=$(readelf -h "$file_name" | grep "Magic:" | sed 's/^[ \t]*Magic:[ \t]*//')
 class=$(readelf -h "$file_name" | grep "Class:" | awk '{print $2}')
-byte_order=$(readelf -h "$file_name" | grep "Data:" | sed -n "s/.*'\(.*\)'.*/\1/p")
+byte_order=$(readelf -h "$file_name" | grep "Data:" | sed "s/.*Data:[ \t]*//; s/'//g" | awk -F',' '{print $2}' | xargs)
 #byte_order=$(readelf -h "$file_name" | grep "Data:" | sed "s/.*Data:[ \t]*//; s/'//g")
 entry_point_address=$(readelf -h "$file_name" | grep "Entry point address:" | awk '{print $4}')
 
